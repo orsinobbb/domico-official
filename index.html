@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="豆米口 DOMICO 是一個把平凡日常變成勇氣故事的台灣原創 IP。跟著小豆、小米、小口讀漫畫、認識角色，也把有共鳴的陪伴帶回生活。" />
+    <meta name="theme-color" content="#fff8e8" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="豆米口 DOMICO" />
+    <meta property="og:title" content="豆米口 DOMICO｜把平凡過得有滋有味" />
+    <meta property="og:description" content="小豆、小米、小口，用好奇、勇氣和一點點傻勁，把每天的難題變成值得收藏的故事。" />
+    <meta property="og:url" content="https://domicotaiwan.com/" />
+    <meta property="og:image" content="https://domicotaiwan.com/doumikou-hero-ai-team.png" />
+    <meta property="og:image:alt" content="小豆、小米、小口一起展開今天的小冒險" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="豆米口 DOMICO｜把平凡過得有滋有味" />
+    <meta name="twitter:description" content="三個不太完美的小家伙，陪你把小小的日常過成有共鳴的故事。" />
+    <meta name="twitter:image" content="https://domicotaiwan.com/doumikou-hero-ai-team.png" />
+    <title>豆米口 DOMICO｜把平凡過得有滋有味</title>
+    <link rel="canonical" href="https://domicotaiwan.com/" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23ff6b4a'/%3E%3Cpath d='M19 35c0-12 7-20 15-20s15 8 15 20-7 17-15 17-15-5-15-17Z' fill='%23fff6df'/%3E%3Ccircle cx='29' cy='33' r='3' fill='%232a2a22'/%3E%3Ccircle cx='40' cy='33' r='3' fill='%232a2a22'/%3E%3Cpath d='M30 41c3 3 6 3 9 0' fill='none' stroke='%232a2a22' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="paper-noise" aria-hidden="true"></div>
+    <div class="reading-progress" aria-hidden="true"><i id="reading-progress-bar"></i></div>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="豆米口 DOMICO 首頁">
+        <span class="brand-mark">豆</span>
+        <span>豆米口 <small>DOMICO</small></span>
+      </a>
+      <nav aria-label="主要導覽">
+        <a href="#friends" data-chapter-link="friends">認識夥伴</a>
+        <a href="#comic" data-chapter-link="comic">漫畫日記</a>
+        <a href="#shop" data-chapter-link="shop">小小商店</a>
+        <a href="#brand-world" data-chapter-link="brand-world">關於豆米口</a>
+      </nav>
+      <a class="journey-pill" href="#journey" aria-label="查看我的豆米口旅程"><span>●</span><b id="journey-label">剛剛相遇</b></a>
+      <button class="sound-toggle" type="button" aria-pressed="false" title="開啟氛圍音">
+        <span aria-hidden="true">♪</span><span class="sound-label">安靜模式</span>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <span class="world-sticker sticker-curious" aria-hidden="true">好奇 +1</span>
+        <span class="world-sticker sticker-together" aria-hidden="true">一起就不怕</span>
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> 豆米口小宇宙・正在營業</p>
+          <h1 id="hero-title">今天，也把平凡<br />過得<span>有滋有味</span>。</h1>
+          <p class="hero-intro">三個不太完美的小家伙，用好奇、勇氣和一點點傻勁，把每天的難題變成值得收藏的故事。</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#comic">開始讀故事 <span>↘</span></a>
+            <button class="button button-ghost" id="fortune-button" type="button">抽一顆今日小勇氣
+            </button>
+          </div>
+          <p class="micro-promise">不用登入、不會突然賣你東西，先在這裡坐一下。</p>
+          <div class="fortune" id="fortune" aria-live="polite" hidden>
+            <span class="fortune-seed" aria-hidden="true">●</span>
+            <div><p>今天的你，不用很厲害也值得被喜歡。</p><a href="#friends">帶著這句話，去找今天的夥伴 <span>↓</span></a></div>
+          </div>
+        </div>
+        <div class="hero-world" data-parallax>
+          <div class="orbit orbit-one" aria-hidden="true"></div>
+          <div class="orbit orbit-two" aria-hidden="true"></div>
+          <img src="doumikou-hero-ai-team.png" alt="小米拿著平板、小豆帶隊前進、小口興奮分享新點子" />
+          <button class="spark spark-one" type="button" data-secret aria-label="收集一顆靈感豆">✶</button>
+          <button class="spark spark-two" type="button" data-secret aria-label="收集一顆靈感豆">✶</button>
+          <div class="hero-caption">
+            <span>EP. 00</span>
+            <p>把世界想得柔軟一點</p>
+          </div>
+        </div>
+        <div class="scroll-note" aria-hidden="true"><span></span>往下走，有故事</div>
+      </section>
+
+      <section class="marquee" aria-label="世界觀關鍵字">
+        <div>
+          <span>好奇是一種超能力</span><b>●</b><span>沒關係，我們一起想辦法</span><b>●</b><span>小小的事也值得開心</span><b>●</b>
+          <span>好奇是一種超能力</span><b>●</b><span>沒關係，我們一起想辦法</span><b>●</b><span>小小的事也值得開心</span><b>●</b>
+        </div>
+      </section>
+
+      <section class="friends section" id="friends" aria-labelledby="friends-title">
+        <span class="chapter-tag" aria-hidden="true">CHAPTER 01 · MEET</span>
+        <div class="section-heading">
+          <p class="eyebrow">三個個性，一種默契</p>
+          <h2 id="friends-title">你今天，比較像誰？</h2>
+          <p>點點他們，聽聽每個人心裡那句小小的話。</p>
+        </div>
+        <div class="character-stage">
+          <div class="character-tabs" role="tablist" aria-label="選擇角色">
+            <button role="tab" aria-selected="true" data-character="dou" class="character-tab active">
+              <span class="portrait portrait-dou"></span><b>小豆</b><small>行動派樂天家</small>
+            </button>
+            <button role="tab" aria-selected="false" data-character="mi" class="character-tab">
+              <span class="portrait portrait-mi"></span><b>小米</b><small>細節派觀察家</small>
+            </button>
+            <button role="tab" aria-selected="false" data-character="kou" class="character-tab">
+              <span class="portrait portrait-kou"></span><b>小口</b><small>感受派氣氛王</small>
+            </button>
+          </div>
+          <article class="character-card" id="character-card" tabindex="0">
+            <div>
+              <p class="character-number">FRIEND 01</p>
+              <h3>小豆 <span>「先做了再說！」</span></h3>
+              <p class="character-story">只要踏出第一步，路就會自己長出來。小豆總是最快出發，也最常忘了帶地圖。</p>
+              <div class="traits"><span>熱血</span><span>不怕糟糕</span><span>愛揪團</span></div>
+            </div>
+            <blockquote>「大不了走錯，走錯也可能有好風景啊。」</blockquote>
+          </article>
+        </div>
+        <div class="connection-note" id="connection-note" aria-live="polite">
+          <span>點一下角色</span>
+          <p>看看三個小家伙，哪一句話最像今天的你？</p><i aria-hidden="true">↑</i>
+        </div>
+      </section>
+
+      <section class="mood-crossroad section" aria-labelledby="mood-title">
+        <span class="doodle-arrow" aria-hidden="true">↘</span>
+        <div>
+          <p class="eyebrow">一個小小的轉彎</p>
+          <h2 id="mood-title">今天的你，<br />想被怎麼接住？</h2>
+        </div>
+        <div class="mood-choices" role="group" aria-label="選擇今天需要的陪伴">
+          <button type="button" data-mood="push"><span>▶</span><b>推我一小步</b><small>小豆帶你先開始</small></button>
+          <button type="button" data-mood="pause"><span>…</span><b>陪我慢一點</b><small>小米和你找回節奏</small></button>
+          <button type="button" data-mood="hug"><span>♡</span><b>先給我一個抱抱</b><small>小口不問理由</small></button>
+        </div>
+        <div class="mood-reply" id="mood-reply" aria-live="polite" hidden><p></p><button type="button">讀這份心情的故事 <span>→</span></button></div>
+      </section>
+
+      <section class="comic section" id="comic" aria-labelledby="comic-title">
+        <span class="chapter-tag" aria-hidden="true">CHAPTER 02 · FEEL</span>
+        <div class="comic-intro">
+          <p class="eyebrow">豆米口漫畫日記</p>
+          <h2 id="comic-title">我們都有一點點<br />不擅長長大。</h2>
+          <p>每週一個短篇，收集那些看似很小，卻悄悄把我們接在一起的時刻。</p>
+          <div class="comic-controls">
+            <button type="button" data-comic-move="-1" aria-label="上一話">←</button>
+            <span id="comic-count">01 / 03</span>
+            <button type="button" data-comic-move="1" aria-label="下一話">→</button>
+            <small>左右翻頁</small>
+          </div>
+          <div class="comic-progress" aria-label="漫畫閱讀進度"><i class="active"></i><i></i><i></i></div>
+          <button class="story-reaction" id="story-reaction" type="button" aria-pressed="false">這一話，有點懂我 <span>♡</span>
+          </button>
+        </div>
+        <div class="comic-reader" id="comic-reader" aria-live="polite">
+          <article class="comic-page active" data-comic-page>
+            <div class="comic-frame wide sky-scene" data-image-slot="images/comics/rain-reason.png"><span>小豆：「雨也會累嗎？」</span></div>
+            <div class="comic-row">
+              <div class="comic-frame bean-scene"><i>……</i></div>
+              <div class="comic-frame quote-scene"><strong>「會啊，所以它才需要落下來。」</strong></div>
+            </div>
+            <footer><span>EP. 01</span><b>《下雨的理由》</b></footer>
+          </article>
+          <article class="comic-page" data-comic-page hidden>
+            <div class="comic-frame wide night-scene" data-image-slot="images/comics/little-star.png"><span>小米數了一百零七顆星星。</span></div>
+            <div class="comic-row">
+              <div class="comic-frame rice-scene"><i>「第一百零八顆是我們。」</i></div>
+              <div class="comic-frame quote-scene yellow"><strong>原來被看見，就會發光。</strong></div>
+            </div>
+            <footer><span>EP. 02</span><b>《少數的那顆星》</b></footer>
+          </article>
+          <article class="comic-page" data-comic-page hidden>
+            <div class="comic-frame wide picnic-scene" data-image-slot="images/comics/share-bread.png"><span>小口把最後一塊麵包分成三份。</span></div>
+            <div class="comic-row">
+              <div class="comic-frame mouth-scene"><i>「我還是會餓，但比較開心。」</i></div>
+              <div class="comic-frame quote-scene coral"><strong>分享不是少了，是多了一起。</strong></div>
+            </div>
+            <footer><span>EP. 03</span><b>《三分之一的飽》</b></footer>
+          </article>
+        </div>
+        <div class="story-handoff" id="story-handoff" hidden aria-live="polite"><span>已收下這份共鳴 ♥</span><p>有些故事看完不會結束，會變成日常裡的一個小提醒。</p><a href="#shop">看看它變成了什麼 <b>↓</b></a></div>
+      </section>
+
+      <section class="shop section" id="shop" aria-labelledby="shop-title">
+        <span class="chapter-tag" aria-hidden="true">CHAPTER 03 · KEEP</span>
+        <div class="section-heading shop-heading">
+          <div>
+            <p class="eyebrow">從故事裡，帶一點點回家</p>
+            <h2 id="shop-title">小小商店</h2>
+            <p class="shop-lede">這裡的東西不是為了裝滿購物車，是想在你的日常裡，留一個「我懂」。</p>
+          </div>
+          <div class="product-filters" aria-label="商品分類">
+            <button class="active" type="button" data-filter="all">全部</button>
+            <button type="button" data-filter="daily">日常好朋友</button>
+            <button type="button" data-filter="collectible">收藏小寶物</button>
+            <button type="button" data-filter="stationery">紙上小日常</button>
+            <button type="button" data-filter="apparel">穿在身上的陪伴</button>
+          </div>
+        </div>
+        <div class="product-grid" id="product-grid">
+          <article class="product-card product-featured" data-product data-product-id="adventure-tote" data-category="daily">
+            <button class="product-preview" type="button" aria-label="看三個小家伙帆布袋的故事">
+              <div class="product-art product-image-pending tote-art" data-image-slot="products/adventure-tote.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">點開看故事 ↗</span>
+            </button>
+            <div class="product-info"><span>DAILY COMPANION</span><h3>三個小家伙帆布袋</h3><p>把今天的勇氣背出門</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="mood-pins" data-category="collectible">
+            <button class="product-preview" type="button" aria-label="看心情徽章三入組的故事">
+              <div class="product-art product-image-pending pin-art" data-image-slot="products/mood-pins.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">點開看故事 ↗</span>
+            </button>
+            <div class="product-info"><span>MOOD SIGNAL</span><h3>心情徽章三入組</h3><p>今天不想解釋，就戴在身上</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="slow-mug" data-category="daily">
+            <button class="product-preview" type="button" aria-label="看慢慢來陶瓷杯的故事">
+              <div class="product-art product-image-pending mug-art" data-image-slot="products/slow-mug.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">點開看故事 ↗</span>
+            </button>
+            <div class="product-info"><span>SLOW MORNING</span><h3>慢慢來陶瓷杯</h3><p>每一口，都是不必趕路的證明</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="story-postcards" data-category="collectible">
+            <button class="product-preview" type="button" aria-label="看漫畫日記明信片的故事">
+              <div class="product-art product-image-pending postcard-art" data-image-slot="products/story-postcards.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">點開看故事 ↗</span>
+            </button>
+            <div class="product-info"><span>SEND A STORY</span><h3>漫畫日記明信片</h3><p>把沒說完的話，寄給一個人</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="story-notebook" data-category="stationery">
+            <button class="product-preview" type="button" aria-label="看今天先寫一點筆記本的故事">
+              <div class="product-art product-image-pending notebook-art" data-image-slot="products/story-notebook.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">翻開它的故事 ↗</span>
+            </button>
+            <div class="product-info"><span>PAPER PAUSE</span><h3>今天先寫一點筆記本</h3><p>留白也算今天的一部分</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="daily-binder" data-category="stationery">
+            <button class="product-preview" type="button" aria-label="看散落也沒關係活頁夾的故事">
+              <div class="product-art product-image-pending binder-art" data-image-slot="products/daily-binder.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">打開它的故事 ↗</span>
+            </button>
+            <div class="product-info"><span>REORDER DAY</span><h3>散落也沒關係活頁夾</h3><p>把還沒整理好的都先收進來</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="companion-cup-sleeve" data-category="daily">
+            <button class="product-preview" type="button" aria-label="看陪你走一段飲料杯套的故事">
+              <div class="product-art product-image-pending cup-sleeve-art" data-image-slot="products/companion-cup-sleeve.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">提起它的故事 ↗</span>
+            </button>
+            <div class="product-info"><span>WALK WITH ME</span><h3>陪你走一段飲料杯套</h3><p>手上有一杯，路就不孤單</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="action-tee" data-category="apparel">
+            <button class="product-preview" type="button" aria-label="看先走一步寬版 T-shirt 的故事">
+              <div class="product-art product-image-pending tee-art" data-image-slot="products/action-tee-v2.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">穿上它的故事 ↗</span>
+            </button>
+            <div class="product-info"><span>FIRST STEP</span><h3>先走一步寬版 T-shirt</h3><p>不必準備好才出發</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="slow-sweatshirt" data-category="apparel">
+            <button class="product-preview" type="button" aria-label="看慢慢來柔軟衛衣的故事">
+              <div class="product-art product-image-pending sweatshirt-art" data-image-slot="products/slow-sweatshirt-v2.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">穿上它的故事 ↗</span>
+            </button>
+            <div class="product-info"><span>QUIET MODE</span><h3>慢慢來柔軟衛衣</h3><p>把世界的音量調低一點</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+          <article class="product-card" data-product data-product-id="hug-socks" data-category="apparel">
+            <button class="product-preview" type="button" aria-label="看走累了就抱抱襪的故事">
+              <div class="product-art product-image-pending socks-art" data-image-slot="products/hug-socks-v2.png"><span class="pending-mark">圖片準備中</span></div><span class="peek-hint">穿上它的故事 ↗</span>
+            </button>
+            <div class="product-info"><span>TINY HUG</span><h3>走累了就抱抱襪</h3><p>每一步都有人好好接住</p><button class="wish-button" type="button" aria-pressed="false">想收藏 <b>♡</b></button></div>
+          </article>
+        </div>
+        <div class="shop-feedback" id="shop-feedback" hidden aria-live="polite"><span>♥</span><div><b id="shop-feedback-title">這件已收進你的小心願</b><p id="shop-feedback-message">收藏不等於現在就要買，是先記住你喜歡的理由。</p></div><a id="shop-feedback-next" href="#shop">再逛逛 <b>→</b></a></div>
+        <p class="shop-note">目前是商品概念展，先收藏喜歡的，不用現在做決定。</p>
+
+        <aside class="launch-invite" id="launch-invite" hidden aria-live="polite">
+          <div><span class="invite-stamp">你挑了 2 件</span><h3>看來我們的頻率有點像。</h3><p>如果你願意，首波打樣完成時只通知一次。不填也沒關係，你的收藏還在。</p></div>
+          <form id="notify-form"><label for="notify-email">想收到首發小紙條</label><div><input id="notify-email" type="email" autocomplete="email" placeholder="you@example.com" required /><button type="submit">幫我留一張</button></div><small>只會寄首發通知，不會變成每日信件。</small></form>
+        </aside>
+      </section>
+
+      <section class="brand-world section" id="brand-world" aria-labelledby="brand-world-title">
+        <span class="chapter-tag" aria-hidden="true">CHAPTER 04 · GROW</span>
+        <div class="brand-world-copy">
+          <p class="eyebrow">一個名字，兩種把想法做出來的方法</p>
+          <h2 id="brand-world-title">豆米口，不只是一個故事。</h2>
+          <p>我們相信，好創意會先讓人感到被理解，再慢慢長成可以陪伴生活的東西。DOMICO 從三個小家伙出發，把故事、設計與技術放在同一張桌上。</p>
+          <a href="#top">從小豆、小米、小口開始認識我們 <span>↑</span></a>
+        </div>
+        <div class="brand-branches">
+          <article class="brand-branch studio-branch">
+            <span>STORIES · OBJECTS · COLLABORATION</span>
+            <h3>豆米口製造所</h3>
+            <b>DOMICO STUDIO</b>
+            <p>角色故事、漫畫、生活物件與品牌合作。把一個有共鳴的念頭，做成想被留在身邊的作品。</p>
+            <small>現在正在發生：小豆・小米・小口</small>
+          </article>
+          <article class="brand-branch labs-branch">
+            <span>PRODUCT · EXPERIENCE · TECHNOLOGY</span>
+            <h3>豆米口科技</h3>
+            <b>DOMICO LABS</b>
+            <p>數位產品、互動體驗與技術實驗。讓科技不只好用，也能保留人的感受與一點想像力。</p>
+            <small>正在醞釀，之後慢慢告訴你</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="ending">
+        <div class="ending-orb" aria-hidden="true">●</div>
+        <p>如果今天不太順利……</p>
+        <h2>沒關係，我們明天<br />再試一小步。</h2>
+        <a href="#top">回到故事的開頭 ↑</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="brand"><span class="brand-mark">豆</span><span>豆米口 <small>DOMICO</small></span></div>
+      <p>平凡的每一天，都有一小口幸福。</p>
+      <p>© 2026 豆米口 DOMICO · Taiwan</p>
+    </footer>
+
+    <div class="seed-counter" id="seed-counter" aria-live="polite"><span>●</span> 靈感豆 <b>0</b> / 2</div>
+    <aside class="journey-dock" id="journey" aria-label="我的豆米口旅程">
+      <button class="journey-handle" type="button" aria-expanded="false" aria-controls="journey-panel"><span>●</span><b>你的小旅程</b><i id="journey-count">0 / 4</i></button>
+      <div class="journey-panel" id="journey-panel" hidden>
+        <p id="journey-message">先隨便逛逛，這裡沒有必走的路。</p>
+        <ol>
+          <li data-stage="connect"><span>○</span>找到像你的夥伴</li>
+          <li data-stage="explore"><span>○</span>讀一則小故事</li>
+          <li data-stage="desire"><span>○</span>收藏一件有感覺的東西</li>
+          <li data-stage="invite"><span>○</span>決定要不要再見面</li>
+        </ol>
+        <button class="replay-guide" id="replay-guide" type="button">再讓三個小家伙帶路一次</button>
+      </div>
+    </aside>
+
+    <aside class="guide-card" id="guide-card" aria-live="polite" hidden>
+      <button class="guide-skip" type="button" aria-label="關閉新手引導">這次先自己逛 ×</button>
+      <div class="guide-character" aria-hidden="true"><span id="guide-face">豆</span><i></i></div>
+      <div class="guide-copy">
+        <small id="guide-kicker">小豆帶路 · 1 / 3</small>
+        <p id="guide-message">不用一次看完。先去找找，今天的你比較像誰？</p>
+        <button class="guide-next" type="button"><span>去認識夥伴</span><b>↘</b></button>
+      </div>
+      <div class="guide-dots" aria-hidden="true"><i class="active"></i><i></i><i></i></div>
+    </aside>
+
+    <dialog class="product-dialog" id="product-dialog">
+      <button class="dialog-close" type="button" aria-label="關閉商品故事">×</button>
+      <p class="eyebrow" id="dialog-kicker">OBJECT STORY</p>
+      <h2 id="dialog-title"></h2>
+      <p id="dialog-story"></p>
+      <blockquote id="dialog-quote"></blockquote>
+      <button class="button button-primary dialog-wish" type="button">收進我的小心願 <span>♡</span></button>
+    </dialog>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

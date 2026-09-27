@@ -1,0 +1,11 @@
+{
+  "name": "豆米口 DOMICO",
+  "short_name": "豆米口",
+  "description": "小豆、小米、小口陪你把平凡日常過成有滋有味的故事。",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8e8",
+  "theme_color": "#ef6246"
+}
