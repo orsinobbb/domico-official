@@ -6,6 +6,8 @@ export function createComicState(length, index = 0) {
   return { length, index: ((index % length) + length) % length };
 }
 
+export const chapterIds = ["top", "friends", "comic", "shop", "brand-world"];
+
 export function moveComic(state, delta) {
   return createComicState(state.length, state.index + delta);
 }
@@ -99,6 +101,7 @@ export function toggleWishlist(state, productId) {
 }
 
 export function getJourneyStage(state) {
+  if (state.moments.includes("notify:launch")) return "belong";
   if (state.wishlist.length >= 2) return "invite";
   if (state.wishlist.length || state.moments.some((moment) => moment.startsWith("product:"))) return "desire";
   if (state.moments.some((moment) => moment.startsWith("comic:") || moment === "seeds:found")) return "explore";
@@ -167,6 +170,11 @@ export function getNextJourneyStep(state) {
       target: "#launch-invite",
       label: "決定要不要再見面",
       message: "你已經選出真正有感覺的東西。",
+    },
+    belong: {
+      target: "#brand-world",
+      label: "看看故事背後的豆米口",
+      message: "謝謝你留下來。接著，認識我們想把故事帶到哪裡。",
     },
   };
   return steps[stage];

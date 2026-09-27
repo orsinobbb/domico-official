@@ -14,7 +14,8 @@ import {
   resolveActiveChapter,
   selectCharacter,
   toggleWishlist,
-} from "./state.js";
+  chapterIds,
+} from "./state.js?v=20260927-2";
 
 const characters = [
   {
@@ -62,6 +63,7 @@ const stageMeta = {
   explore: { label: "走進故事", count: 2, message: "原來你也懂這些很小、卻很重要的事。" },
   desire: { label: "想帶回家", count: 3, message: "你收好了一個想留住的感覺，隨時可以改變心意。" },
   invite: { label: "下次再見", count: 4, message: "這份喜歡已經很清楚了。要不要再見面，由你決定。" },
+  belong: { label: "成為朋友", count: 4, message: "謝謝你把一點豆米口留在今天。故事後面，還有我們想做的事。" },
 };
 
 const guideSteps = [
@@ -141,7 +143,7 @@ function renderJourney() {
     item.classList.toggle("done", done);
     item.querySelector("span").textContent = done ? "●" : "○";
   });
-  document.querySelector("#launch-invite").hidden = stage !== "invite";
+  document.querySelector("#launch-invite").hidden = !["invite", "belong"].includes(stage);
   document.querySelectorAll("[data-product]").forEach((card) => {
     const wished = journey.wishlist.includes(card.dataset.productId);
     card.classList.toggle("is-wished", wished);
@@ -327,8 +329,7 @@ productDialog.addEventListener("click", (event) => {
 document.querySelector("#notify-form").addEventListener("submit", (event) => {
   event.preventDefault();
   const form = event.currentTarget;
-  const email = form.querySelector("input").value;
-  form.innerHTML = `<p class="notify-success"><b>小紙條已經寫好了 ●</b><br>打樣完成後，我們會送到 ${email.replace(/[<>&]/g, "")} 一次。</p>`;
+  form.innerHTML = `<p class="notify-success"><b>謝謝你想收到這張小紙條 ●</b><br>目前是概念預覽，這次不會儲存或送出你的信箱；正式通知串接後，我們會再請你確認一次。</p><a class="notify-next" href="#brand-world">看看故事背後的豆米口 <span>→</span></a>`;
   remember("notify:launch");
 });
 
@@ -434,12 +435,7 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll(".section, .ending").forEach((section) => observer.observe(section));
 
-const chapterElements = [
-  { id: "top", element: document.querySelector("#top") },
-  { id: "friends", element: document.querySelector("#friends") },
-  { id: "comic", element: document.querySelector("#comic") },
-  { id: "shop", element: document.querySelector("#shop") },
-];
+const chapterElements = chapterIds.map((id) => ({ id, element: document.querySelector(`#${id}`) }));
 let scrollFrame = 0;
 
 function updateReadingPosition() {
@@ -461,7 +457,10 @@ function updateReadingPosition() {
 addEventListener("scroll", () => {
   if (!scrollFrame) scrollFrame = requestAnimationFrame(updateReadingPosition);
 }, { passive: true });
+addEventListener("scrollend", updateReadingPosition, { passive: true });
 addEventListener("resize", updateReadingPosition);
+addEventListener("hashchange", updateReadingPosition);
+addEventListener("load", () => setTimeout(updateReadingPosition, 0));
 
 renderJourney();
 renderGuide();

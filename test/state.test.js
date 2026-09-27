@@ -18,6 +18,12 @@ import {
   toggleWishlist,
 } from "../src/state.js";
 
+test("official-site navigation includes the DOMICO brand chapter", async () => {
+  const state = await import("../src/state.js");
+
+  assert.deepEqual(state.chapterIds, ["top", "friends", "comic", "shop", "brand-world"]);
+});
+
 test("comic navigation wraps from the last chapter to the first", () => {
   const state = createComicState(3, 2);
 
@@ -150,6 +156,15 @@ test("two product likes hand off to the launch invitation instead of more shoppi
   journey = toggleWishlist(journey, "story-postcards");
 
   assert.equal(getNextJourneyStep(journey).target, "#launch-invite");
+});
+
+test("accepting the launch invitation continues into the official brand story", () => {
+  let journey = toggleWishlist(createJourneyState(), "slow-mug");
+  journey = toggleWishlist(journey, "story-postcards");
+  journey = recordJourneyMoment(journey, "notify:launch");
+
+  assert.equal(getJourneyStage(journey), "belong");
+  assert.equal(getNextJourneyStep(journey).target, "#brand-world");
 });
 
 test("every new stationery and apparel item opens a complete object story", async () => {

@@ -263,6 +263,9 @@ img { display: block; max-width: 100%; }
 .launch-invite input { min-width: 0; flex: 1; padding: 11px 14px; border: 0; outline: 0; background: transparent; }
 .launch-invite form button { padding: 11px 16px; border: 0; border-radius: 99px; background: var(--ink); color: white; font-weight: 800; cursor: pointer; }
 .launch-invite form small { display: block; margin-top: 9px; color: #665b37; }
+.notify-success { margin: 0 0 13px; line-height: 1.7; }
+.notify-next { display: inline-flex; gap: 9px; align-items: center; padding: 10px 14px; border-radius: 99px; color: white; background: var(--ink); font-size: .78rem; font-weight: 900; }
+.notify-next span { color: var(--yellow); }
 
 .brand-world { display: grid; grid-template-columns: .75fr 1.25fr; gap: clamp(44px, 8vw, 120px); align-items: center; background: #f2e8d5; }
 .brand-world::before { content: "DOMICO"; position: absolute; right: -1.5vw; bottom: -3vw; color: rgba(39,39,31,.045); font-size: clamp(7rem, 18vw, 18rem); font-weight: 900; line-height: .8; letter-spacing: -.08em; pointer-events: none; }
