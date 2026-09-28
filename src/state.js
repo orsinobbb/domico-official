@@ -1,3 +1,28 @@
+import { audiencePaths } from "./ip-content.js";
+
+const favoriteFields = {
+  character: "favoriteCharacters",
+  story: "favoriteStories",
+  kindness: "favoriteKindnessCards",
+};
+
+function uniqueStrings(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter((item) => typeof item === "string" && item.length > 0))];
+}
+
+export function normalizeJourneyState(value) {
+  const source = value && typeof value === "object" ? value : {};
+  return {
+    version: 2,
+    moments: uniqueStrings(source.moments),
+    wishlist: uniqueStrings(source.wishlist),
+    favoriteCharacters: uniqueStrings(source.favoriteCharacters),
+    favoriteStories: uniqueStrings(source.favoriteStories),
+    favoriteKindnessCards: uniqueStrings(source.favoriteKindnessCards),
+  };
+}
+
 export function createComicState(length, index = 0) {
   if (!Number.isInteger(length) || length < 1) {
     throw new Error("Comic length must be a positive integer");
@@ -84,7 +109,7 @@ export function selectCharacter(characters, id) {
 }
 
 export function createJourneyState() {
-  return { moments: [], wishlist: [] };
+  return normalizeJourneyState();
 }
 
 export function recordJourneyMoment(state, moment) {
@@ -98,6 +123,48 @@ export function toggleWishlist(state, productId) {
     ? state.wishlist.filter((id) => id !== productId)
     : [...state.wishlist, productId];
   return { ...state, wishlist };
+}
+
+export function toggleFavorite(state, type, id) {
+  const field = favoriteFields[type];
+  if (!field) throw new Error(`Unknown favorite type: ${type}`);
+  if (typeof id !== "string" || !id) return normalizeJourneyState(state);
+
+  const normalized = normalizeJourneyState(state);
+  const values = normalized[field];
+  return {
+    ...normalized,
+    [field]: values.includes(id) ? values.filter((value) => value !== id) : [...values, id],
+  };
+}
+
+export function getStoryNeighbor(season, storyId, direction) {
+  const story = season?.stories?.find((entry) => entry.id === storyId);
+  if (!story) throw new Error(`Unknown story: ${storyId}`);
+  if (!["previous", "next"].includes(direction)) {
+    throw new Error(`Unknown story direction: ${direction}`);
+  }
+
+  const neighborId = story[`${direction}Id`];
+  if (neighborId === null) return null;
+  const neighbor = season.stories.find((entry) => entry.id === neighborId);
+  if (!neighbor) throw new Error(`Unknown story: ${neighborId}`);
+  return neighbor;
+}
+
+export function pickKindnessCard(cards, seed) {
+  if (!Array.isArray(cards) || cards.length === 0) {
+    throw new Error("Kindness cards must not be empty");
+  }
+  const numericSeed = Number.isFinite(Number(seed)) ? Math.trunc(Number(seed)) : 0;
+  const index = ((numericSeed % cards.length) + cards.length) % cards.length;
+  return cards[index];
+}
+
+export function getAudienceNextStep(audienceId) {
+  const path = audiencePaths.find((entry) => entry.id === audienceId);
+  if (!path) throw new Error(`Unknown audience: ${audienceId}`);
+  return { ...path.nextStep };
 }
 
 export function getJourneyStage(state) {

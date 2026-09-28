@@ -12,11 +12,17 @@ import {
   getJourneyStage,
   getMoodRoute,
   getNextJourneyStep,
+  getAudienceNextStep,
+  getStoryNeighbor,
+  normalizeJourneyState,
+  pickKindnessCard,
   recordJourneyMoment,
   resolveActiveChapter,
   selectCharacter,
   toggleWishlist,
+  toggleFavorite,
 } from "../src/state.js";
+import { audiencePaths, kindnessCards, storySeason } from "../src/ip-content.js";
 
 test("official-site navigation includes the DOMICO brand chapter", async () => {
   const state = await import("../src/state.js");
@@ -187,4 +193,77 @@ test("every new stationery and apparel item opens a complete object story", asyn
   }
 
   assert.throws(() => state.getProductStory("missing-product"), /Unknown product/);
+});
+
+test("legacy journeys migrate to reversible V2 favorites without losing progress", () => {
+  const migrated = normalizeJourneyState({
+    moments: ["character:mi", "character:mi", null],
+    wishlist: ["slow-mug", "slow-mug", 17],
+  });
+
+  assert.deepEqual(migrated, {
+    version: 2,
+    moments: ["character:mi"],
+    wishlist: ["slow-mug"],
+    favoriteCharacters: [],
+    favoriteStories: [],
+    favoriteKindnessCards: [],
+  });
+});
+
+test("normalization removes invalid and repeated V2 values", () => {
+  const normalized = normalizeJourneyState({
+    version: 2,
+    moments: "not-an-array",
+    wishlist: [],
+    favoriteCharacters: ["mi", "mi", false],
+    favoriteStories: ["rain-reason", 3],
+    favoriteKindnessCards: ["send-a-thanks", "send-a-thanks"],
+  });
+
+  assert.deepEqual(normalized.favoriteCharacters, ["mi"]);
+  assert.deepEqual(normalized.favoriteStories, ["rain-reason"]);
+  assert.deepEqual(normalized.favoriteKindnessCards, ["send-a-thanks"]);
+  assert.deepEqual(normalized.moments, []);
+});
+
+test("character, story and kindness favorites can each be undone", () => {
+  for (const [type, id, field] of [
+    ["character", "mi", "favoriteCharacters"],
+    ["story", "rain-reason", "favoriteStories"],
+    ["kindness", "send-a-thanks", "favoriteKindnessCards"],
+  ]) {
+    const added = toggleFavorite(createJourneyState(), type, id);
+    assert.deepEqual(added[field], [id]);
+    assert.deepEqual(toggleFavorite(added, type, id)[field], []);
+  }
+
+  assert.throws(() => toggleFavorite(createJourneyState(), "unknown", "x"), /Unknown favorite type/);
+});
+
+test("story neighbors stop clearly at the boundaries", () => {
+  const [first, second, third] = storySeason.stories;
+
+  assert.equal(getStoryNeighbor(storySeason, first.id, "previous"), null);
+  assert.equal(getStoryNeighbor(storySeason, third.id, "next"), null);
+  assert.equal(getStoryNeighbor(storySeason, first.id, "next").id, second.id);
+  assert.equal(getStoryNeighbor(storySeason, third.id, "previous").id, second.id);
+  assert.throws(() => getStoryNeighbor(storySeason, "missing", "next"), /Unknown story/);
+});
+
+test("the same kindness seed stays stable and valid seeds never leave the deck", () => {
+  const firstPick = pickKindnessCard(kindnessCards, 20260928);
+  const repeatPick = pickKindnessCard(kindnessCards, 20260928);
+
+  assert.deepEqual(firstPick, repeatPick);
+  for (const seed of [-19, 0, 1, 7, 99, 20260929]) {
+    assert.ok(kindnessCards.includes(pickKindnessCard(kindnessCards, seed)));
+  }
+});
+
+test("audience next steps come from the approved audience paths", () => {
+  for (const audience of audiencePaths) {
+    assert.deepEqual(getAudienceNextStep(audience.id), audience.nextStep);
+  }
+  assert.throws(() => getAudienceNextStep("unknown"), /Unknown audience/);
 });
