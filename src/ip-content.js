@@ -1,0 +1,151 @@
+export const characters = [
+  {
+    id: "dou",
+    number: "FRIEND 01",
+    name: "小豆",
+    motto: "先做了再說！",
+    story: "只要踏出第一步，路就會自己長出來。小豆總是最快出發，也最常忘了帶地圖。",
+    traits: ["熱血", "不怕糟糕", "愛揪團"],
+    quote: "大不了走錯，走錯也可能有好風景啊。",
+    accent: "#ef6246",
+    outerImpression: "總是第一個衝出去，把還在猶豫的大家一起拉上路。",
+    innerConflict: "其實很怕讓期待自己的人失望，所以常把疲累藏在行動後面。",
+    learning: "正在練習出發前先停一下，也讓別人有機會陪他一起勇敢。",
+    strengths: ["把猶豫變成第一步", "為夥伴點燃行動"],
+    blindSpots: ["太快承諾", "忘了照顧自己的疲累"],
+  },
+  {
+    id: "mi",
+    number: "FRIEND 02",
+    name: "小米",
+    motto: "等一下，這裡有個小細節。",
+    story: "小米不太搜刮世界，只是很會看見被大家忽略的事。當你走得太快，他會輕輕拉住你。",
+    traits: ["細心", "收集型", "冷靜吐槽"],
+    quote: "慢一點沒關係，有些答案只會在安靜裡出現。",
+    accent: "#7f9b65",
+    outerImpression: "看起來安靜又可靠，總能發現別人沒注意到的小線索。",
+    innerConflict: "因為看得太多，反而害怕漏掉什麼，也擔心自己的慢會拖累大家。",
+    learning: "正在練習說出不確定，知道求助不是把責任推給別人。",
+    strengths: ["把複雜變得有脈絡", "替沉默的感受留位置"],
+    blindSpots: ["想得太久才行動", "把擔心留給自己"],
+  },
+  {
+    id: "kou",
+    number: "FRIEND 03",
+    name: "小口",
+    motto: "先吃一口，再想想看！",
+    story: "小口的情緒永遠比大家大一號。他會放聲笑、放心哭，也會記得你上次沒說完的心事。",
+    traits: ["感性", "會分享", "喜歡點心"],
+    quote: "感受很多不是麻煩，是我還認真地喜歡這個世界。",
+    accent: "#e5a93d",
+    outerImpression: "情緒寫在臉上，笑得大聲，也總記得把最後一口分給朋友。",
+    innerConflict: "感受比別人多一點，有時會怕自己的需要成為大家的負擔。",
+    learning: "正在練習誠實表達需要，相信被照顧與照顧別人同樣重要。",
+    strengths: ["讓人放心做自己", "把喜歡變成真誠分享"],
+    blindSpots: ["先照顧別人才說自己", "被情緒淹沒時不知怎麼開口"],
+  },
+];
+
+export const storySeason = {
+  id: "season-1-small-things",
+  name: "小小事情研究所",
+  theme: "在平凡裡練習理解、分享與被接住。",
+  stories: [
+    {
+      id: "rain-reason",
+      title: "下雨的理由",
+      theme: "允許情緒落下來",
+      characterIds: ["dou", "mi"],
+      image: "images/comics/rain-reason.png",
+      previousId: null,
+      nextId: "little-star",
+    },
+    {
+      id: "little-star",
+      title: "少數的那顆星",
+      theme: "被看見就會發光",
+      characterIds: ["mi", "kou"],
+      image: "images/comics/little-star.png",
+      previousId: "rain-reason",
+      nextId: "share-bread",
+    },
+    {
+      id: "share-bread",
+      title: "三分之一的飽",
+      theme: "分享讓我們多了一起",
+      characterIds: ["kou", "dou", "mi"],
+      image: "images/comics/share-bread.png",
+      previousId: "little-star",
+      nextId: null,
+    },
+  ],
+};
+
+export const kindnessCards = [
+  {
+    id: "notice-one-thing",
+    characterId: "mi",
+    action: "今天留意一件平常會被忽略的小事，安靜地看它十秒鐘。",
+    voice: "小米說：看見，本身就是一種溫柔。",
+  },
+  {
+    id: "send-a-thanks",
+    characterId: "dou",
+    action: "傳一句簡短的謝謝給最近幫過你的人，不需要等到完美時機。",
+    voice: "小豆說：想到就出發，善意也會自己長出路。",
+  },
+  {
+    id: "save-the-last-bite",
+    characterId: "kou",
+    action: "把今天的一小份喜歡，留給一個你想一起分享的人。",
+    voice: "小口說：分出去以後，我們會多得到一個一起。",
+  },
+  {
+    id: "ask-before-helping",
+    characterId: "mi",
+    action: "想幫忙以前先問一句：你現在希望我陪你，還是一起想辦法？",
+    voice: "小米說：好好理解，比急著給答案更靠近。",
+  },
+  {
+    id: "make-a-small-start",
+    characterId: "dou",
+    action: "挑一件拖了很久的事，只做能在五分鐘內完成的第一步。",
+    voice: "小豆說：不用一次抵達，先讓今天動起來。",
+  },
+  {
+    id: "name-your-feeling",
+    characterId: "kou",
+    action: "用一個不批評自己的詞，說出此刻最明顯的感受。",
+    voice: "小口說：感受不是麻煩，它是在告訴我們重要的事。",
+  },
+  {
+    id: "leave-room-for-rest",
+    characterId: "dou",
+    action: "替今天留下一小段不用表現、也不用完成任何事的時間。",
+    voice: "小豆說：休息不是停下勇敢，是幫明天留一點力氣。",
+  },
+];
+
+export const audiencePaths = [
+  {
+    id: "fan",
+    label: "我想認識他們",
+    promise: "從一篇短短的日常開始，找到與你有點相像的豆米口夥伴。",
+    nextStep: { label: "讀第一篇漫畫", target: "#comic" },
+  },
+  {
+    id: "family",
+    label: "我想一起陪孩子長大",
+    promise: "用角色、故事與小行動，讓難說的感受變成可以一起聊的話。",
+    nextStep: { label: "抽一張善意練習", target: "#kindness" },
+  },
+  {
+    id: "partner",
+    label: "我想和豆米口合作",
+    promise: "把有共鳴的角色世界，延伸成品牌合作、內容企劃與真實體驗。",
+    nextStep: {
+      label: "說說合作想法",
+      target: "mailto:hello@domicotaiwan.com?subject=%E8%B1%86%E7%B1%B3%E5%8F%A3%20IP%20%E5%90%88%E4%BD%9C%E6%83%B3%E6%B3%95",
+    },
+  },
+];

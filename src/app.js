@@ -16,39 +16,7 @@ import {
   toggleWishlist,
   chapterIds,
 } from "./state.js?v=20260927-2";
-
-const characters = [
-  {
-    id: "dou",
-    number: "FRIEND 01",
-    name: "小豆",
-    motto: "先做了再說！",
-    story: "只要踏出第一步，路就會自己長出來。小豆總是最快出發，也最常忘了帶地圖。",
-    traits: ["熱血", "不怕糟糕", "愛揪團"],
-    quote: "大不了走錯，走錯也可能有好風景啊。",
-    accent: "#ef6246",
-  },
-  {
-    id: "mi",
-    number: "FRIEND 02",
-    name: "小米",
-    motto: "等一下，這裡有個小細節。",
-    story: "小米不太搜刮世界，只是很會看見被大家忽略的事。當你走得太快，他會輕輕拉住你。",
-    traits: ["細心", "收集型", "冷靜吐槽"],
-    quote: "慢一點沒關係，有些答案只會在安靜裡出現。",
-    accent: "#7f9b65",
-  },
-  {
-    id: "kou",
-    number: "FRIEND 03",
-    name: "小口",
-    motto: "先吃一口，再想想看！",
-    story: "小口的情緒永遠比大家大一號。他會放聲笑、放心哭，也會記得你上次沒說完的心事。",
-    traits: ["感性", "會分享", "喜歡點心"],
-    quote: "感受很多不是麻煩，是我還認真地喜歡這個世界。",
-    accent: "#e5a93d",
-  },
-];
+import { characters } from "./ip-content.js?v=20260928-1";
 
 const fortunes = [
   "今天的你，不用很厲害也值得被喜歡。",
