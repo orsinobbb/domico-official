@@ -49,3 +49,36 @@ test("deployment files describe the production site", async () => {
   assert.match(sitemap, /<loc>https:\/\/domicotaiwan\.com\/<\/loc>/);
   assert.equal(cname.trim(), "domicotaiwan.com");
 });
+
+test("character discovery shows three human layers instead of a single label", async () => {
+  const html = await read("index.html");
+
+  assert.match(html, /id="friends"/);
+  assert.match(html, /別人先看見的我/);
+  assert.match(html, /其實心裡/);
+  assert.match(html, /我正在學著/);
+  assert.match(html, /data-character-favorite/);
+});
+
+test("the first story season exposes three connected, actionable entries", async () => {
+  const html = await read("index.html");
+
+  assert.match(html, /小小事情研究所/);
+  assert.match(html, /在平凡裡練習理解、分享與被接住/);
+  assert.equal((html.match(/data-story-id=/g) ?? []).length, 3);
+  assert.equal((html.match(/data-story-character/g) ?? []).length, 3);
+  assert.equal((html.match(/data-story-go="previous"/g) ?? []).length, 3);
+  assert.equal((html.match(/data-story-go="next"/g) ?? []).length, 3);
+  assert.equal((html.match(/href="#kindness"/g) ?? []).length, 3);
+  assert.equal((html.match(/data-story-object/g) ?? []).length, 3);
+});
+
+test("homepage fragment links are never empty or missing their destination", async () => {
+  const html = await read("index.html");
+  const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
+  const fragments = [...html.matchAll(/\bhref="#([^"]*)"/g)].map((match) => match[1]);
+
+  assert.ok(fragments.length > 0);
+  assert.ok(fragments.every(Boolean), "empty fragment link found");
+  assert.deepEqual(fragments.filter((fragment) => !ids.has(fragment)), []);
+});

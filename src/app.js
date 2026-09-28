@@ -4,19 +4,21 @@ import {
   createGuideState,
   advanceGuide,
   dismissGuide,
-  moveComic,
   filterProducts,
+  getStoryNeighbor,
   getProductStory,
   getJourneyStage,
   getMoodRoute,
   getNextJourneyStep,
+  normalizeJourneyState,
   recordJourneyMoment,
   resolveActiveChapter,
   selectCharacter,
+  toggleFavorite,
   toggleWishlist,
   chapterIds,
-} from "./state.js?v=20260927-2";
-import { characters } from "./ip-content.js?v=20260928-1";
+} from "./state.js?v=20260928-1";
+import { characters, storySeason } from "./ip-content.js?v=20260928-1";
 
 const fortunes = [
   "今天的你，不用很厲害也值得被喜歡。",
@@ -64,7 +66,7 @@ const guideSteps = [
 function loadJourney() {
   try {
     const saved = JSON.parse(localStorage.getItem("doumikou-journey"));
-    if (Array.isArray(saved?.moments) && Array.isArray(saved?.wishlist)) return saved;
+    if (saved && typeof saved === "object") return normalizeJourneyState(saved);
   } catch {}
   return createJourneyState();
 }
@@ -119,6 +121,16 @@ function renderJourney() {
     button.setAttribute("aria-pressed", String(wished));
     button.innerHTML = wished ? "已收藏 <b>♥</b>" : "想收藏 <b>♡</b>";
   });
+  const characterFavorite = document.querySelector("[data-character-favorite]");
+  if (characterFavorite) {
+    const characterId = characterFavorite.dataset.characterFavorite;
+    const favorite = journey.favoriteCharacters.includes(characterId);
+    const character = selectCharacter(characters, characterId);
+    characterFavorite.setAttribute("aria-pressed", String(favorite));
+    characterFavorite.innerHTML = favorite
+      ? `今天有${character.name}陪我 <span>♥</span>`
+      : `把${character.name}留在今天 <span>♡</span>`;
+  }
   localStorage.setItem("doumikou-journey", JSON.stringify(journey));
 }
 
@@ -135,6 +147,27 @@ function revealInlineStep(element) {
 
 const card = document.querySelector("#character-card");
 const tabs = [...document.querySelectorAll("[data-character]")];
+let activeCharacterId = "dou";
+
+function renderCharacter(character) {
+  activeCharacterId = character.id;
+  card.style.setProperty("--character-accent", character.accent);
+  card.innerHTML = `
+    <div class="character-card__intro">
+      <p class="character-number">${character.number}</p>
+      <h3>${character.name} <span>「${character.motto}」</span></h3>
+      <p class="character-story">${character.story}</p>
+      <div class="traits">${character.traits.map((trait) => `<span>${trait}</span>`).join("")}</div>
+    </div>
+    <div class="character-layers">
+      <section><small>別人先看見的我</small><p>${character.outerImpression}</p></section>
+      <section><small>其實心裡</small><p>${character.innerConflict}</p></section>
+      <section><small>我正在學著</small><p>${character.learning}</p></section>
+      <blockquote>「${character.quote}」</blockquote>
+      <button class="character-favorite" type="button" data-character-favorite="${character.id}" aria-pressed="false">把${character.name}留在今天 <span>♡</span></button>
+    </div>`;
+  renderJourney();
+}
 
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
@@ -144,16 +177,8 @@ tabs.forEach((tab) => {
       item.classList.toggle("active", active);
       item.setAttribute("aria-selected", String(active));
     });
-    card.style.setProperty("--character-accent", character.accent);
     card.animate([{ opacity: 0.35, transform: "translateY(12px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 360, easing: "cubic-bezier(.2,.8,.2,1)" });
-    card.innerHTML = `
-      <div>
-        <p class="character-number">${character.number}</p>
-        <h3>${character.name} <span>「${character.motto}」</span></h3>
-        <p class="character-story">${character.story}</p>
-        <div class="traits">${character.traits.map((trait) => `<span>${trait}</span>`).join("")}</div>
-      </div>
-      <blockquote>「${character.quote}」</blockquote>`;
+    renderCharacter(character);
     const note = document.querySelector("#connection-note");
     note.innerHTML = `<span>${character.name} 接到你了 ✓</span><p>今天的你可能需要這句：「${character.quote}」</p><a href="#comic">讀一篇${character.name}想留給你的故事 <b>↓</b></a>`;
     note.classList.add("confirmed");
@@ -161,11 +186,28 @@ tabs.forEach((tab) => {
   });
 });
 
+card.addEventListener("click", (event) => {
+  const favoriteButton = event.target.closest("[data-character-favorite]");
+  if (!favoriteButton) return;
+  journey = toggleFavorite(journey, "character", activeCharacterId);
+  renderJourney();
+});
+
 let comicState = createComicState(document.querySelectorAll("[data-comic-page]").length);
 const comicPages = [...document.querySelectorAll("[data-comic-page]")];
 const comicCount = document.querySelector("#comic-count");
+const comicTheme = document.querySelector("#comic-theme");
+const storyReaction = document.querySelector("#story-reaction");
 
-function activateComic(index, track = true) {
+function renderStoryReaction() {
+  const story = storySeason.stories[comicState.index];
+  const favorite = journey.favoriteStories.includes(story.id);
+  storyReaction.setAttribute("aria-pressed", String(favorite));
+  storyReaction.innerHTML = favorite ? "謝謝你也懂 <span>♥</span>" : "這一話，有點懂我 <span>♡</span>";
+  document.querySelector("#story-handoff").hidden = !favorite;
+}
+
+function activateComic(index, track = true, focus = false) {
   comicState = createComicState(comicState.length, index);
   comicPages.forEach((page, pageIndex) => {
     const active = pageIndex === comicState.index;
@@ -173,29 +215,54 @@ function activateComic(index, track = true) {
     page.classList.toggle("active", active);
   });
   comicCount.textContent = `${String(comicState.index + 1).padStart(2, "0")} / ${String(comicState.length).padStart(2, "0")}`;
+  comicTheme.textContent = storySeason.stories[comicState.index].theme;
   document.querySelectorAll(".comic-progress i").forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === comicState.index));
-  if (track) remember(`comic:${comicState.index + 1}`);
+  renderStoryReaction();
+  if (track) remember(`comic:${storySeason.stories[comicState.index].id}`);
+  if (focus) comicPages[comicState.index].focus({ preventScroll: true });
 }
 
-document.querySelectorAll("[data-comic-move]").forEach((button) => {
+function navigateStory(direction, focus = true) {
+  const story = storySeason.stories[comicState.index];
+  const neighbor = getStoryNeighbor(storySeason, story.id, direction);
+  if (!neighbor) {
+    document.querySelector(".comic-intro")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  activateComic(storySeason.stories.findIndex((entry) => entry.id === neighbor.id), true, focus);
+}
+
+document.querySelectorAll("[data-season-move]").forEach((button) => {
   button.addEventListener("click", () => {
-    const next = moveComic(comicState, Number(button.dataset.comicMove));
-    activateComic(next.index);
+    navigateStory(button.dataset.seasonMove);
   });
 });
 
-document.querySelector("#story-reaction").addEventListener("click", (event) => {
-  const button = event.currentTarget;
-  const active = button.getAttribute("aria-pressed") !== "true";
-  button.setAttribute("aria-pressed", String(active));
-  button.innerHTML = active ? "謝謝你也懂 <span>♥</span>" : "這一話，有點懂我 <span>♡</span>";
+document.querySelectorAll("[data-story-go]").forEach((button) => {
+  button.addEventListener("click", () => navigateStory(button.dataset.storyGo));
+});
+
+storyReaction.addEventListener("click", () => {
+  const story = storySeason.stories[comicState.index];
+  journey = toggleFavorite(journey, "story", story.id);
+  const active = journey.favoriteStories.includes(story.id);
+  renderJourney();
+  renderStoryReaction();
   const handoff = document.querySelector("#story-handoff");
-  handoff.hidden = !active;
   if (active) {
-    remember(`comic:${comicState.index + 1}`);
+    remember(`comic:${story.id}`);
     handoff.animate([{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], { duration: 360 });
     revealInlineStep(handoff);
   }
+});
+
+document.querySelectorAll("[data-story-object]").forEach((link) => {
+  link.addEventListener("click", () => {
+    document.querySelectorAll("[data-product]").forEach((product) => product.classList.remove("route-highlight"));
+    const recommended = document.querySelector(`[data-product-id="${link.dataset.storyObject}"]`);
+    recommended?.classList.add("route-highlight");
+    setTimeout(() => recommended?.classList.remove("route-highlight"), 2400);
+  });
 });
 
 const moodReplies = {
@@ -431,5 +498,6 @@ addEventListener("hashchange", updateReadingPosition);
 addEventListener("load", () => setTimeout(updateReadingPosition, 0));
 
 renderJourney();
+renderStoryReaction();
 renderGuide();
 updateReadingPosition();

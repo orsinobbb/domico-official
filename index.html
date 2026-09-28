@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23ff6b4a'/%3E%3Cpath d='M19 35c0-12 7-20 15-20s15 8 15 20-7 17-15 17-15-5-15-17Z' fill='%23fff6df'/%3E%3Ccircle cx='29' cy='33' r='3' fill='%232a2a22'/%3E%3Ccircle cx='40' cy='33' r='3' fill='%232a2a22'/%3E%3Cpath d='M30 41c3 3 6 3 9 0' fill='none' stroke='%232a2a22' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="styles.css?v=20260927-2" />
+    <link rel="stylesheet" href="styles.css?v=20260928-1" />
   </head>
   <body>
     <div class="paper-noise" aria-hidden="true"></div>
@@ -106,13 +106,19 @@
             </button>
           </div>
           <article class="character-card" id="character-card" tabindex="0">
-            <div>
+            <div class="character-card__intro">
               <p class="character-number">FRIEND 01</p>
               <h3>小豆 <span>「先做了再說！」</span></h3>
               <p class="character-story">只要踏出第一步，路就會自己長出來。小豆總是最快出發，也最常忘了帶地圖。</p>
               <div class="traits"><span>熱血</span><span>不怕糟糕</span><span>愛揪團</span></div>
             </div>
-            <blockquote>「大不了走錯，走錯也可能有好風景啊。」</blockquote>
+            <div class="character-layers">
+              <section><small>別人先看見的我</small><p>總是第一個衝出去，把還在猶豫的大家一起拉上路。</p></section>
+              <section><small>其實心裡</small><p>很怕讓期待自己的人失望，所以常把疲累藏在行動後面。</p></section>
+              <section><small>我正在學著</small><p>出發前先停一下，也讓別人有機會陪我一起勇敢。</p></section>
+              <blockquote>「大不了走錯，走錯也可能有好風景啊。」</blockquote>
+              <button class="character-favorite" type="button" data-character-favorite="dou" aria-pressed="false">把小豆留在今天 <span>♡</span></button>
+            </div>
           </article>
         </div>
         <div class="connection-note" id="connection-note" aria-live="polite">
@@ -138,46 +144,74 @@
       <section class="comic section" id="comic" aria-labelledby="comic-title">
         <span class="chapter-tag" aria-hidden="true">CHAPTER 02 · FEEL</span>
         <div class="comic-intro">
-          <p class="eyebrow">豆米口漫畫日記</p>
+          <p class="eyebrow">第一季 · 小小事情研究所</p>
           <h2 id="comic-title">我們都有一點點<br />不擅長長大。</h2>
-          <p>每週一個短篇，收集那些看似很小，卻悄悄把我們接在一起的時刻。</p>
+          <p>在平凡裡練習理解、分享與被接住。三篇短短的日常，沒有標準答案，只有願意多懂彼此一點。</p>
           <div class="comic-controls">
-            <button type="button" data-comic-move="-1" aria-label="上一話">←</button>
+            <button type="button" data-season-move="previous" aria-label="上一話">←</button>
             <span id="comic-count">01 / 03</span>
-            <button type="button" data-comic-move="1" aria-label="下一話">→</button>
-            <small>左右翻頁</small>
+            <button type="button" data-season-move="next" aria-label="下一話">→</button>
+            <small id="comic-theme">允許情緒落下來</small>
           </div>
           <div class="comic-progress" aria-label="漫畫閱讀進度"><i class="active"></i><i></i><i></i></div>
           <button class="story-reaction" id="story-reaction" type="button" aria-pressed="false">這一話，有點懂我 <span>♡</span>
           </button>
         </div>
         <div class="comic-reader" id="comic-reader" aria-live="polite">
-          <article class="comic-page active" data-comic-page>
+          <article class="comic-page active" data-comic-page data-story-id="rain-reason" tabindex="-1">
             <div class="comic-frame wide sky-scene" data-image-slot="images/comics/rain-reason.png"><span>小豆：「雨也會累嗎？」</span></div>
             <div class="comic-row">
               <div class="comic-frame bean-scene"><i>……</i></div>
               <div class="comic-frame quote-scene"><strong>「會啊，所以它才需要落下來。」</strong></div>
             </div>
             <footer><span>EP. 01</span><b>《下雨的理由》</b></footer>
+            <div class="story-paths" aria-label="下雨的理由讀後去向">
+              <a href="#friends" data-story-character>認識小豆與小米</a>
+              <button type="button" data-story-go="previous">← 回到故事季</button>
+              <button type="button" data-story-go="next">下一篇：少數的那顆星 →</button>
+              <a href="#kindness">做一件今日小善意</a>
+              <a href="#shop" data-story-object="slow-mug">看看故事裡的日常物件</a>
+            </div>
           </article>
-          <article class="comic-page" data-comic-page hidden>
+          <article class="comic-page" data-comic-page data-story-id="little-star" tabindex="-1" hidden>
             <div class="comic-frame wide night-scene" data-image-slot="images/comics/little-star.png"><span>小米數了一百零七顆星星。</span></div>
             <div class="comic-row">
               <div class="comic-frame rice-scene"><i>「第一百零八顆是我們。」</i></div>
               <div class="comic-frame quote-scene yellow"><strong>原來被看見，就會發光。</strong></div>
             </div>
             <footer><span>EP. 02</span><b>《少數的那顆星》</b></footer>
+            <div class="story-paths" aria-label="少數的那顆星讀後去向">
+              <a href="#friends" data-story-character>認識小米與小口</a>
+              <button type="button" data-story-go="previous">← 上一篇：下雨的理由</button>
+              <button type="button" data-story-go="next">下一篇：三分之一的飽 →</button>
+              <a href="#kindness">做一件今日小善意</a>
+              <a href="#shop" data-story-object="story-postcards">看看故事裡的日常物件</a>
+            </div>
           </article>
-          <article class="comic-page" data-comic-page hidden>
+          <article class="comic-page" data-comic-page data-story-id="share-bread" tabindex="-1" hidden>
             <div class="comic-frame wide picnic-scene" data-image-slot="images/comics/share-bread.png"><span>小口把最後一塊麵包分成三份。</span></div>
             <div class="comic-row">
               <div class="comic-frame mouth-scene"><i>「我還是會餓，但比較開心。」</i></div>
               <div class="comic-frame quote-scene coral"><strong>分享不是少了，是多了一起。</strong></div>
             </div>
             <footer><span>EP. 03</span><b>《三分之一的飽》</b></footer>
+            <div class="story-paths" aria-label="三分之一的飽讀後去向">
+              <a href="#friends" data-story-character>認識小口、小豆與小米</a>
+              <button type="button" data-story-go="previous">← 上一篇：少數的那顆星</button>
+              <button type="button" data-story-go="next">回到故事季 →</button>
+              <a href="#kindness">做一件今日小善意</a>
+              <a href="#shop" data-story-object="companion-cup-sleeve">看看故事裡的日常物件</a>
+            </div>
           </article>
         </div>
         <div class="story-handoff" id="story-handoff" hidden aria-live="polite"><span>已收下這份共鳴 ♥</span><p>有些故事看完不會結束，會變成日常裡的一個小提醒。</p><a href="#shop">看看它變成了什麼 <b>↓</b></a></div>
+      </section>
+
+      <section class="kindness-preview section" id="kindness" aria-labelledby="kindness-preview-title">
+        <p class="eyebrow">故事讀完以後</p>
+        <h2 id="kindness-preview-title">把共鳴，變成今天做得到的一件小事。</h2>
+        <p>七張不公開、不評分的小善意練習正在準備中。下一段，我們會一起抽出今天最剛好的那一張。</p>
+        <a class="button button-ghost" href="#shop">也可以先逛逛故事物件 <span>↓</span></a>
       </section>
 
       <section class="shop section" id="shop" aria-labelledby="shop-title">
