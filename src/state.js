@@ -161,6 +161,13 @@ export function pickKindnessCard(cards, seed) {
   return cards[index];
 }
 
+export function buildKindnessShareText(card) {
+  if (!card || typeof card.action !== "string" || typeof card.voice !== "string") {
+    throw new Error("A complete kindness card is required");
+  }
+  return `今天的豆米口小善意：\n${card.action}\n${card.voice}\nhttps://domicotaiwan.com/`;
+}
+
 export function getAudienceNextStep(audienceId) {
   const path = audiencePaths.find((entry) => entry.id === audienceId);
   if (!path) throw new Error(`Unknown audience: ${audienceId}`);

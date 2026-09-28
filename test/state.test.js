@@ -6,6 +6,7 @@ import {
   createGuideState,
   createJourneyState,
   advanceGuide,
+  buildKindnessShareText,
   dismissGuide,
   moveComic,
   filterProducts,
@@ -266,4 +267,14 @@ test("audience next steps come from the approved audience paths", () => {
     assert.deepEqual(getAudienceNextStep(audience.id), audience.nextStep);
   }
   assert.throws(() => getAudienceNextStep("unknown"), /Unknown audience/);
+});
+
+test("kindness share copy contains only the card, character voice and official URL", () => {
+  const card = kindnessCards[0];
+  const text = buildKindnessShareText(card);
+
+  assert.match(text, new RegExp(card.action));
+  assert.match(text, new RegExp(card.voice));
+  assert.match(text, /https:\/\/domicotaiwan\.com\//);
+  assert.doesNotMatch(text, /姓名|信箱|email|輸入/iu);
 });

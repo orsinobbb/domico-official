@@ -82,3 +82,17 @@ test("homepage fragment links are never empty or missing their destination", asy
   assert.ok(fragments.every(Boolean), "empty fragment link found");
   assert.deepEqual(fragments.filter((fragment) => !ids.has(fragment)), []);
 });
+
+test("daily kindness works without sign-in and always exposes a share fallback", async () => {
+  const html = await read("index.html");
+
+  assert.match(html, /id="kindness-card"/);
+  assert.match(html, /id="kindness-action"/);
+  assert.match(html, /id="kindness-voice"/);
+  assert.match(html, /data-kindness-redraw/);
+  assert.match(html, /data-kindness-favorite/);
+  assert.match(html, /data-kindness-share/);
+  assert.match(html, /id="kindness-share-fallback"[^>]*readonly/);
+  assert.match(html, /id="kindness-feedback"[^>]*aria-live="polite"/);
+  assert.doesNotMatch(html, /<form[^>]*kindness|<input[^>]*kindness/);
+});

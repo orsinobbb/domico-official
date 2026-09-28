@@ -3,6 +3,7 @@ import {
   createJourneyState,
   createGuideState,
   advanceGuide,
+  buildKindnessShareText,
   dismissGuide,
   filterProducts,
   getStoryNeighbor,
@@ -11,6 +12,7 @@ import {
   getMoodRoute,
   getNextJourneyStep,
   normalizeJourneyState,
+  pickKindnessCard,
   recordJourneyMoment,
   resolveActiveChapter,
   selectCharacter,
@@ -18,7 +20,7 @@ import {
   toggleWishlist,
   chapterIds,
 } from "./state.js?v=20260928-1";
-import { characters, storySeason } from "./ip-content.js?v=20260928-1";
+import { characters, kindnessCards, storySeason } from "./ip-content.js?v=20260928-1";
 
 const fortunes = [
   "今天的你，不用很厲害也值得被喜歡。",
@@ -130,6 +132,12 @@ function renderJourney() {
     characterFavorite.innerHTML = favorite
       ? `今天有${character.name}陪我 <span>♥</span>`
       : `把${character.name}留在今天 <span>♡</span>`;
+  }
+  const kindnessFavorite = document.querySelector("[data-kindness-favorite]");
+  if (kindnessFavorite && activeKindnessCard) {
+    const favorite = journey.favoriteKindnessCards.includes(activeKindnessCard.id);
+    kindnessFavorite.setAttribute("aria-pressed", String(favorite));
+    kindnessFavorite.innerHTML = favorite ? "已收進今天 <span>♥</span>" : "收進今天 <span>♡</span>";
   }
   localStorage.setItem("doumikou-journey", JSON.stringify(journey));
 }
@@ -263,6 +271,79 @@ document.querySelectorAll("[data-story-object]").forEach((link) => {
     recommended?.classList.add("route-highlight");
     setTimeout(() => recommended?.classList.remove("route-highlight"), 2400);
   });
+});
+
+function getLocalDateSeed() {
+  const today = new Date();
+  return Number(`${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`);
+}
+
+const kindnessCharacterLabels = {
+  dou: "小豆的行動練習",
+  mi: "小米的觀察練習",
+  kou: "小口的感受練習",
+};
+const kindnessCard = document.querySelector("#kindness-card");
+const kindnessFeedback = document.querySelector("#kindness-feedback");
+const kindnessFallback = document.querySelector(".kindness-share-fallback");
+const kindnessFallbackText = document.querySelector("#kindness-share-fallback");
+let kindnessOffset = 0;
+let activeKindnessCard = pickKindnessCard(kindnessCards, getLocalDateSeed());
+
+function renderKindnessCard() {
+  const cardIndex = kindnessCards.findIndex((cardItem) => cardItem.id === activeKindnessCard.id);
+  kindnessCard.dataset.character = activeKindnessCard.characterId;
+  kindnessCard.querySelector("#kindness-character").textContent = kindnessCharacterLabels[activeKindnessCard.characterId];
+  kindnessCard.querySelector(".kindness-card__top small").textContent = `${String(cardIndex + 1).padStart(2, "0")} / ${String(kindnessCards.length).padStart(2, "0")}`;
+  kindnessCard.querySelector("#kindness-action").textContent = activeKindnessCard.action;
+  kindnessCard.querySelector("#kindness-voice").textContent = activeKindnessCard.voice;
+  kindnessFeedback.textContent = "這張卡不會自動公開，怎麼完成都算數。";
+  kindnessFallback.hidden = true;
+  renderJourney();
+}
+
+document.querySelector("[data-kindness-redraw]").addEventListener("click", () => {
+  kindnessOffset += 1;
+  activeKindnessCard = pickKindnessCard(kindnessCards, getLocalDateSeed() + kindnessOffset);
+  renderKindnessCard();
+  kindnessCard.animate([{ opacity: 0.45, transform: "rotate(-1deg) translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 360 });
+});
+
+document.querySelector("[data-kindness-favorite]").addEventListener("click", () => {
+  const wasFavorite = journey.favoriteKindnessCards.includes(activeKindnessCard.id);
+  journey = toggleFavorite(journey, "kindness", activeKindnessCard.id);
+  renderJourney();
+  kindnessFeedback.textContent = wasFavorite
+    ? "已從今天移開；改變心意也值得被尊重。"
+    : "已收進今天，只存在這台裝置的瀏覽器裡。";
+});
+
+document.querySelector("[data-kindness-share]").addEventListener("click", async () => {
+  const shareText = buildKindnessShareText(activeKindnessCard);
+  kindnessFallback.hidden = true;
+  try {
+    if (typeof navigator.share === "function") {
+      await navigator.share({ title: "豆米口｜今日小善意", text: shareText });
+      kindnessFeedback.textContent = "分享面板已打開，善意要傳給誰由你決定。";
+      return;
+    }
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(shareText);
+      kindnessFeedback.textContent = "分享文字已複製，可以貼到你想分享的地方。";
+      return;
+    }
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      kindnessFeedback.textContent = "已取消分享，這張卡仍好好留在這裡。";
+      return;
+    }
+  }
+
+  kindnessFallbackText.value = shareText;
+  kindnessFallback.hidden = false;
+  kindnessFeedback.textContent = "可以長按或選取下方文字，再貼到你想分享的地方。";
+  kindnessFallbackText.focus({ preventScroll: true });
+  kindnessFallbackText.select();
 });
 
 const moodReplies = {
@@ -497,7 +578,7 @@ addEventListener("resize", updateReadingPosition);
 addEventListener("hashchange", updateReadingPosition);
 addEventListener("load", () => setTimeout(updateReadingPosition, 0));
 
-renderJourney();
+renderKindnessCard();
 renderStoryReaction();
 renderGuide();
 updateReadingPosition();

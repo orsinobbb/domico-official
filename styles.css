@@ -210,10 +210,28 @@ img { display: block; max-width: 100%; }
 .story-handoff a { padding: 10px 14px; border-radius: 99px; color: white; background: var(--ink); font-size: .8rem; font-weight: 900; }
 .story-handoff a b { color: var(--yellow); }
 
-.kindness-preview { padding-block: clamp(72px, 9vw, 120px); text-align: center; background: #f7d7bd; }
-.kindness-preview h2 { max-width: 780px; margin: 12px auto 18px; font-family: "Klee One", cursive; font-size: clamp(2rem, 4vw, 4rem); line-height: 1.15; letter-spacing: -.05em; }
-.kindness-preview > p:not(.eyebrow) { max-width: 650px; margin: 0 auto 26px; color: #65594e; line-height: 1.8; }
-.kindness-preview .button { display: inline-flex; }
+.kindness { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(36px, 7vw, 100px); align-items: center; background: #f7d7bd; }
+.kindness::before { content: "GOOD\A TODAY"; white-space: pre; position: absolute; left: -1%; bottom: -4%; color: rgba(39,39,31,.04); font-size: clamp(7rem, 17vw, 16rem); font-weight: 900; line-height: .68; transform: rotate(4deg); pointer-events: none; }
+.kindness-heading, .kindness-card { position: relative; z-index: 2; }
+.kindness-heading h2 { max-width: 720px; margin: 12px 0 20px; font-family: "Klee One", cursive; font-size: clamp(2.4rem, 4.8vw, 5rem); line-height: 1.12; letter-spacing: -.06em; }
+.kindness-heading > p:last-child { max-width: 610px; color: #65594e; line-height: 1.85; }
+.kindness-card { --kindness-accent: var(--sage); min-height: 480px; padding: clamp(26px, 4vw, 52px); display: flex; flex-direction: column; justify-content: space-between; border: 2px solid var(--ink); border-radius: 44px 44px 120px 44px; background: var(--paper); box-shadow: 13px 14px 0 var(--ink); overflow: hidden; }
+.kindness-card::after { content: ""; position: absolute; right: -72px; top: -80px; width: 230px; height: 230px; border: 48px solid var(--kindness-accent); border-radius: 50%; opacity: .3; pointer-events: none; }
+.kindness-card[data-character="dou"] { --kindness-accent: var(--coral); }
+.kindness-card[data-character="mi"] { --kindness-accent: var(--sage); }
+.kindness-card[data-character="kou"] { --kindness-accent: var(--yellow); }
+.kindness-card__top { display: flex; justify-content: space-between; gap: 20px; position: relative; z-index: 2; }
+.kindness-card__top span { padding: 7px 11px; border-radius: 99px; color: white; background: var(--ink); font-size: .72rem; font-weight: 900; }
+.kindness-card__top small { color: #777365; font-weight: 900; }
+.kindness-action { max-width: 680px; margin: 42px 0 20px; font-family: "Klee One", cursive; font-size: clamp(1.65rem, 3.2vw, 3.15rem); font-weight: 600; line-height: 1.4; letter-spacing: -.04em; }
+.kindness-voice { margin: 0 0 34px; padding-left: 16px; border-left: 3px solid var(--kindness-accent); color: #615f55; line-height: 1.7; }
+.kindness-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.kindness-actions button { padding: 10px 13px; border: 1px solid rgba(39,39,31,.25); border-radius: 99px; color: var(--ink); background: transparent; cursor: pointer; font: inherit; font-size: .78rem; font-weight: 900; }
+.kindness-actions button:hover, .kindness-actions button:focus-visible, .kindness-actions button[aria-pressed="true"] { color: white; background: var(--ink); }
+.kindness-feedback { min-height: 1.5em; margin: 18px 0 0; color: #69665b; font-size: .78rem; }
+.kindness-share-fallback { margin-top: 16px; }
+.kindness-share-fallback label { display: block; margin-bottom: 8px; color: #5c594f; font-size: .76rem; line-height: 1.5; }
+.kindness-share-fallback textarea { width: 100%; padding: 12px; border: 1px dashed var(--line); border-radius: 12px; color: var(--ink); background: #fffdf6; resize: vertical; font: inherit; font-size: .78rem; line-height: 1.6; }
 
 .shop { background: var(--paper); }
 .shop-heading { display: flex; align-items: end; justify-content: space-between; gap: 28px; }
@@ -380,7 +398,7 @@ img { display: block; max-width: 100%; }
   .hero-copy { max-width: 760px; }
   .hero-world { width: min(780px, 100%); margin: auto; padding: 5%; }
   .scroll-note { display: none; }
-  .character-stage, .comic, .mood-crossroad, .brand-world { grid-template-columns: 1fr; }
+  .character-stage, .comic, .mood-crossroad, .kindness, .brand-world { grid-template-columns: 1fr; }
   .character-tabs { grid-template-columns: repeat(3, 1fr); }
   .character-tab { grid-template-columns: 58px 1fr; }
   .portrait { width: 58px; height: 58px; background-size: 310px auto; }
@@ -419,6 +437,8 @@ img { display: block; max-width: 100%; }
   .comic-row .comic-frame + .comic-frame { margin-left: 0; }
   .story-paths { grid-template-columns: 1fr; }
   .story-paths [data-story-character] { grid-column: auto; }
+  .kindness-card { min-height: 430px; border-radius: 30px 30px 84px 30px; box-shadow: 8px 9px 0 var(--ink); }
+  .kindness-actions { display: grid; }
   .shop-heading { align-items: start; flex-direction: column; }
   .product-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
   .product-card:nth-child(even) { margin-top: 16px; }

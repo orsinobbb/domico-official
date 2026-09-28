@@ -207,11 +207,31 @@
         <div class="story-handoff" id="story-handoff" hidden aria-live="polite"><span>已收下這份共鳴 ♥</span><p>有些故事看完不會結束，會變成日常裡的一個小提醒。</p><a href="#shop">看看它變成了什麼 <b>↓</b></a></div>
       </section>
 
-      <section class="kindness-preview section" id="kindness" aria-labelledby="kindness-preview-title">
-        <p class="eyebrow">故事讀完以後</p>
-        <h2 id="kindness-preview-title">把共鳴，變成今天做得到的一件小事。</h2>
-        <p>七張不公開、不評分的小善意練習正在準備中。下一段，我們會一起抽出今天最剛好的那一張。</p>
-        <a class="button button-ghost" href="#shop">也可以先逛逛故事物件 <span>↓</span></a>
+      <section class="kindness section" id="kindness" aria-labelledby="kindness-title">
+        <span class="chapter-tag" aria-hidden="true">A SMALL PRACTICE</span>
+        <div class="kindness-heading">
+          <p class="eyebrow">故事讀完以後</p>
+          <h2 id="kindness-title">把共鳴，變成今天做得到的一件小事。</h2>
+          <p>不用登入、不用回報，也沒有人替你打分數。抽一張剛剛好的練習，只留在你的裝置裡。</p>
+        </div>
+        <article class="kindness-card" id="kindness-card" data-character="mi">
+          <div class="kindness-card__top">
+            <span id="kindness-character">小米的觀察練習</span>
+            <small>01 / 07</small>
+          </div>
+          <p class="kindness-action" id="kindness-action">今天留意一件平常會被忽略的小事，安靜地看它十秒鐘。</p>
+          <p class="kindness-voice" id="kindness-voice">小米說：看見，本身就是一種溫柔。</p>
+          <div class="kindness-actions" aria-label="今日小善意選項">
+            <button type="button" data-kindness-redraw>換一張看看 <span>↻</span></button>
+            <button type="button" data-kindness-favorite aria-pressed="false">收進今天 <span>♡</span></button>
+            <button type="button" data-kindness-share>分享這份善意 <span>↗</span></button>
+          </div>
+          <p class="kindness-feedback" id="kindness-feedback" aria-live="polite">這張卡不會自動公開，怎麼完成都算數。</p>
+          <div class="kindness-share-fallback" hidden>
+            <label for="kindness-share-fallback">你的裝置沒有開啟分享功能，可以長按下方文字複製：</label>
+            <textarea id="kindness-share-fallback" readonly rows="6"></textarea>
+          </div>
+        </article>
       </section>
 
       <section class="shop section" id="shop" aria-labelledby="shop-title">
