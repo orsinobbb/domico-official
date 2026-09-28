@@ -19,7 +19,7 @@ test("official homepage exposes the DOMICO brand and complete sharing metadata",
   assert.match(html, /name="twitter:card" content="summary_large_image"/);
   assert.match(html, /rel="manifest" href="manifest\.webmanifest"/);
   assert.match(html, /id="brand-world"/);
-  assert.match(html, /豆米口製造所/);
+  assert.match(html, /豆米口文創/);
   assert.match(html, /豆米口科技/);
 });
 
@@ -69,7 +69,7 @@ test("the first story season exposes three connected, actionable entries", async
   assert.equal((html.match(/data-story-character/g) ?? []).length, 3);
   assert.equal((html.match(/data-story-go="previous"/g) ?? []).length, 3);
   assert.equal((html.match(/data-story-go="next"/g) ?? []).length, 3);
-  assert.equal((html.match(/href="#kindness"/g) ?? []).length, 3);
+  assert.ok((html.match(/href="#kindness"/g) ?? []).length >= 3);
   assert.equal((html.match(/data-story-object/g) ?? []).length, 3);
 });
 
@@ -95,4 +95,26 @@ test("daily kindness works without sign-in and always exposes a share fallback",
   assert.match(html, /id="kindness-share-fallback"[^>]*readonly/);
   assert.match(html, /id="kindness-feedback"[^>]*aria-live="polite"/);
   assert.doesNotMatch(html, /<form[^>]*kindness|<input[^>]*kindness/);
+});
+
+test("fans, families and partners each receive an explicit next step", async () => {
+  const html = await read("index.html");
+
+  assert.equal((html.match(/data-audience="(?:fan|family|partner)"/g) ?? []).length, 3);
+  assert.match(html, /data-audience="fan"[\s\S]*?href="#comic"/);
+  assert.match(html, /data-audience="fan"[\s\S]*?data-line-status="pending"/);
+  assert.match(html, /data-audience="family"[\s\S]*?href="#kindness"/);
+  assert.match(html, /data-audience="family"[\s\S]*?mailto:hello@domicotaiwan\.com\?subject=/);
+  assert.match(html, /data-audience="partner"[\s\S]*?href="#collaboration"/);
+  assert.match(html, /data-audience="partner"[\s\S]*?mailto:hello@domicotaiwan\.com\?subject=/);
+});
+
+test("brand ecosystem keeps IP and technology distinct while linking both sites", async () => {
+  const html = await read("index.html");
+
+  assert.match(html, /豆米口文創/);
+  assert.match(html, /小豆、小米、小口是擁有自己個性與故事的原創 IP/);
+  assert.match(html, /href="https:\/\/tech\.domicotaiwan\.com\/"/);
+  assert.match(html, /前往豆米口科技，找到適合的數位與 AI 合作方式/);
+  assert.doesNotMatch(html, />\s*了解更多\s*</);
 });

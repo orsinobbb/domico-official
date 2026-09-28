@@ -6,6 +6,7 @@ import {
   buildKindnessShareText,
   dismissGuide,
   filterProducts,
+  getAudienceNextStep,
   getStoryNeighbor,
   getProductStory,
   getJourneyStage,
@@ -20,7 +21,7 @@ import {
   toggleWishlist,
   chapterIds,
 } from "./state.js?v=20260928-1";
-import { characters, kindnessCards, storySeason } from "./ip-content.js?v=20260928-1";
+import { audiencePaths, characters, kindnessCards, storySeason } from "./ip-content.js?v=20260928-1";
 
 const fortunes = [
   "今天的你，不用很厲害也值得被喜歡。",
@@ -344,6 +345,16 @@ document.querySelector("[data-kindness-share]").addEventListener("click", async 
   kindnessFeedback.textContent = "可以長按或選取下方文字，再貼到你想分享的地方。";
   kindnessFallbackText.focus({ preventScroll: true });
   kindnessFallbackText.select();
+});
+
+audiencePaths.forEach((audience) => {
+  const cardElement = document.querySelector(`[data-audience="${audience.id}"]`);
+  const nextStep = getAudienceNextStep(audience.id);
+  const nextLink = cardElement?.querySelector("[data-audience-next]");
+  if (!nextLink) return;
+  nextLink.href = nextStep.target;
+  nextLink.childNodes[0].textContent = `${nextStep.label} `;
+  nextLink.addEventListener("click", () => remember(`audience:${audience.id}`));
 });
 
 const moodReplies = {
